@@ -1,32 +1,20 @@
-name: Deploy to Pre-Production Environment
+name: Test GitHub Actions Workflow
 
 on:
   push:
     branches:
-      - pre-prod  # Trigger on push to the pre-prod branch
+      - feature  # Trigger on push to 'feature' branch
 
 jobs:
-  deploy:
+  test:
     runs-on: ubuntu-latest
-
-    env:
-      AWS_REGION: us-east-1
-      S3_BUCKET: my-app-preprod
-      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_PREPROD_DIST_ID }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install AWS CLI
-      run: |
-        sudo apt-get update
-        sudo apt-get install awscli
+    - name: Print a message
+      run: echo "The workflow is running successfully!"
 
-    - name: Sync S3 Bucket for Pre-Prod
-      run: |
-        aws s3 sync ./pre-prod s3://$S3_BUCKET --delete --region $AWS_REGION
-
-    - name: Invalidate CloudFront Cache for Pre-Prod
-      run: |
-        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
+    - name: Verify AWS CLI Version
+      run: aws --version
