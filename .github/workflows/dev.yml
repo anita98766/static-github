@@ -3,7 +3,7 @@ name: Deploy to Development Environment
 on:
   push:
     branches:
-      - dev  # Trigger on push to the dev branch
+      - feature # Trigger on push to the dev branch
 
 jobs:
   deploy:
