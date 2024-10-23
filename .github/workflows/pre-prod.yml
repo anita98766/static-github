@@ -1,9 +1,9 @@
-name: Deploy to Development Environment
+name: Deploy to Pre-Production Environment
 
 on:
   push:
     branches:
-      - feature  # Trigger on push to the dev branch
+      - pre-prod  # Trigger on push to the pre-prod branch
 
 jobs:
   deploy:
@@ -11,8 +11,8 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: my-app-dev  # Your S3 bucket name for the dev environment
-      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
+      S3_BUCKET: my-app-pre-prod  # Your S3 bucket name for the pre-prod environment
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_PRE_PROD_DIST_ID }}
 
     steps:
     - name: Checkout code
@@ -25,10 +25,10 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Sync S3 Bucket for Dev
+    - name: Sync S3 Bucket for Pre-Prod (Upload Only)
       run: |
-        aws s3 sync ./dev s3://$S3_BUCKET --delete --region $AWS_REGION
+        aws s3 sync ./pre-prod s3://$S3_BUCKET/pre-prod/ --region $AWS_REGION
 
-    - name: Invalidate CloudFront Cache for Dev
+    - name: Invalidate CloudFront Cache for Pre-Prod
       run: |
         aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
