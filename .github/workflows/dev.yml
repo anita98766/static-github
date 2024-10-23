@@ -1,0 +1,32 @@
+name: Deploy to Development Environment
+
+on:
+  push:
+    branches:
+      - dev  # Trigger on push to the dev branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      S3_BUCKET: my-app-dev  # Your dev S3 bucket
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install AWS CLI
+      run: |
+        sudo apt-get update
+        sudo apt-get install awscli
+
+    - name: Sync S3 Bucket for Dev
+      run: |
+        aws s3 sync ./dev s3://$S3_BUCKET --delete --region $AWS_REGION
+
+    - name: Invalidate CloudFront Cache for Dev
+      run: |
+        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
