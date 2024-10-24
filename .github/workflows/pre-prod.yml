@@ -6,6 +6,7 @@ on:
       - feature 
     paths:
       - pre-pod/** # This triggers the workflow for any changes in the pre-pod folder
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
