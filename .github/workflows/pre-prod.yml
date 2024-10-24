@@ -14,7 +14,7 @@ jobs:
     env:
       AWS_REGION: us-east-1
       S3_BUCKET: myfirstbucket509123001245 # Your S3 bucket name for the pre-pod environment
-      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }} # Ensure this is set correctly
 
     steps:
     - name: Checkout code
