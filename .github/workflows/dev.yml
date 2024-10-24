@@ -11,7 +11,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: my-app-dev  # Your S3 bucket name for the dev environment
+      S3_BUCKET: my-app-dev1  # Your S3 bucket name for the dev environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
@@ -25,10 +25,14 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
-    - name: Sync S3 Bucket for Dev
+    - name: Create a Bucket
       run: |
-        aws s3 sync ./dev s3://$S3_BUCKET --delete --region $AWS_REGION
-
-    - name: Invalidate CloudFront Cache for Dev
+          aws s3 mb s3:${{ env.S3_BUCKET }} --region ${{ env.AWS_REGION }} \ || echo "Bucket already exists or failed to create"
+    
+    - name: Deploy to s3
       run: |
-        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
+        aws s3 cp dev/index.html s3://${{ env.S3_BUCKET }}/index.html2
+             
+    - name: Invalidate CloudFront cache
+        run:|
+          aws cloudfront create-invalidation --distribution-id ${{secrets.CLOULDFRONT_DESTRIBUTION_ID}} --paths "/*"
