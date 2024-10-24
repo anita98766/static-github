@@ -12,7 +12,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: myfirstbucket5091230011456u  # Your S3 bucket name for the dev environment
+      S3_BUCKET: mybucketstaticwebsite111  # Your S3 bucket name for the dev environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
