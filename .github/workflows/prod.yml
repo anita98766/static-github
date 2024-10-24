@@ -1,32 +1,35 @@
-name: Deploy to Production Environment
+name: Deploy to poduction  Environment
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
-
+      - feature 
+    paths:
+      - prod/** # This triggers the workflow for any changes in the dev folder
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: my-app-prod
-      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_PROD_DIST_ID }}
+      S3_BUCKET: myfirstbucket5091230011456u  # Your S3 bucket name for the dev environment
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install AWS CLI
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+   
+    - name: Deploy to S3
       run: |
-        sudo apt-get update
-        sudo apt-get install awscli
-
-    - name: Sync S3 Bucket for Prod
+        aws s3 cp prod/index.html s3://${{ env.S3_BUCKET }}/index.html4
+         
+    - name: Invalidate CloudFront cache
       run: |
-        aws s3 sync ./prod s3://$S3_BUCKET --delete --region $AWS_REGION
-
-    - name: Invalidate CloudFront Cache for Prod
-      run: |
-        aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} --paths "/*
