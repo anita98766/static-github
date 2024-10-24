@@ -11,7 +11,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: my-app-dev2  # Your S3 bucket name for the dev environment
+      S3_BUCKET: myfirstbucket5091230011456u  # Your S3 bucket name for the dev environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
@@ -24,11 +24,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-
-    - name: Create a Bucket
-      run: |
-          aws s3 mb s3:${{ env.S3_BUCKET }} --region ${{ env.AWS_REGION }} 
-    
+   
     - name: Deploy to s3
       run: |
         aws s3 cp dev/index.html s3://${{ env.S3_BUCKET }}/index.html2
