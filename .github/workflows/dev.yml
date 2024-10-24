@@ -11,7 +11,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: my-app-dev1  # Your S3 bucket name for the dev environment
+      S3_BUCKET: my-app-dev2  # Your S3 bucket name for the dev environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
