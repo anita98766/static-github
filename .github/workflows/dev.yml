@@ -3,7 +3,8 @@ name: Deploy to Development Environment
 on:
   push:
     branches:
-      - feature  
+      - feature 
+      - dev/index.html
 
 jobs:
   deploy:
