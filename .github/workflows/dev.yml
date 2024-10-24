@@ -61,16 +61,7 @@ jobs:
     - name: Deploy to S3
       run: |
         aws s3 cp dev/index.html s3://${{ env.S3_BUCKET }}/index.html2
-
-    # Debugging step to verify CloudFront Distribution ID
-    - name: Check CloudFront Distribution ID
-      run: echo "CloudFront Distribution ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}"
-
-    - name: Invalidate CloudFront cache
-      run: |
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} --paths "/*"
-
-             
+         
     - name: Invalidate CloudFront cache
       run: |
         aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} --paths "/*"
