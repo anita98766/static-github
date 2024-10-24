@@ -29,6 +29,47 @@ jobs:
     - name: Deploy to S3
       run: |
         aws s3 cp dev/index.html s3://${{ env.S3_BUCKET }}/index.html2
+
+      name: Deploy to Development Environment
+
+on:
+  push:
+    branches:
+      - feature 
+      - dev/index.html
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      S3_BUCKET: myfirstbucket5091230011456u  # Your S3 bucket name for the dev environment
+      CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+   
+    - name: Deploy to S3
+      run: |
+        aws s3 cp dev/index.html s3://${{ env.S3_BUCKET }}/index.html2
+
+    # Debugging step to verify CloudFront Distribution ID
+    - name: Check CloudFront Distribution ID
+      run: echo "CloudFront Distribution ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}"
+
+    - name: Invalidate CloudFront cache
+      run: |
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DIST_ID }} --paths "/*"
+
              
     - name: Invalidate CloudFront cache
       run: |
