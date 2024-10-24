@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - feature 
-      - dev/index.html
+    paths:
+      - dev/** # This triggers the workflow for any changes in the dev folder
+      - !dev/index.html # Exclude if you want to prevent it from triggering only for that specific file
 
 jobs:
   deploy:
