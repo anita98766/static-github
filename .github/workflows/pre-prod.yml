@@ -13,7 +13,7 @@ jobs:
 
     env:
       AWS_REGION: us-east-1
-      S3_BUCKET: myfirstbucket509123001245 # Your S3 bucket name for the pre-pod environment
+      S3_BUCKET: myfirstbucket5088aa # Your S3 bucket name for the pre-pod environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }} # Ensure this is set correctly
 
     steps:
@@ -29,7 +29,7 @@ jobs:
    
     - name: Deploy to S3
       run: |
-        aws s3 cp pre-pod/index.html s3://${{ env.S3_BUCKET }}/index.html3
+        aws s3 cp pre-pod/index.html s3://${{ env.S3_BUCKET }}/index.html
          
     - name: Invalidate CloudFront cache
       run: |
