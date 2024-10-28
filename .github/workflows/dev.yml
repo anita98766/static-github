@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AWS_REGION: us-east-1
-      S3_BUCKET: myfirstbucket5088aa # Your S3 bucket name for the dev environment
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET_DEV }} # Your S3 bucket name for the dev environment
       CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DEV_DIST_ID }}
 
     steps:
